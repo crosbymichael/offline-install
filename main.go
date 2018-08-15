@@ -27,11 +27,12 @@ func run(ctx context.Context, path string) error {
 		return err
 	}
 	defer client.Close()
+	// TODO: add version comparison for the images
 	image, err := importImage(ctx, client, path)
 	if err != nil {
 		return err
 	}
-	return client.Install(ctx, image)
+	return client.Install(ctx, image, containerd.WithInstallReplace)
 }
 
 func importImage(ctx context.Context, client *containerd.Client, path string) (containerd.Image, error) {
